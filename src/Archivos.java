@@ -111,10 +111,14 @@ public void leer_bc(String nombre) throws IOException {
             new String(etiqueta).replace('\0', ' ');
             System.out.println(etiqueta);
             
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 8; i++) 
+            {
                 //punto = leer_archi.readInt();
                 punto = leer_archi.readFloat();
-                System.out.println(punto);
+                if(punto != 0.0)
+                    System.out.println(punto);
+                //else
+                  //  break;
             }
 
         }
