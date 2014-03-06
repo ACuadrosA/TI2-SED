@@ -52,7 +52,7 @@ public class Archivos {
             n = 1;
             for (int i = 0; i < 8; i++) {
                 if (n != 1) {
-                    archi.writeInt(0);
+                    archi.writeFloat(0);
                 } else {
                     System.out.println("Introduce punto critico: ");
                     //punto = entrada.nextInt();
