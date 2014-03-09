@@ -2,6 +2,7 @@ import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -89,14 +90,15 @@ public int recorrerfin() throws FileNotFoundException, IOException {
                 //leer_archi.readInt();
                 leer_archi.readFloat();
             }
-                
+                System.out.println(leer_archi.getFilePointer());
             contador++;
         }
         leer_archi.close();
         return contador;
     }
 
-public void leer_bc(String nombre) throws IOException {
+public void leer_bc(String nombre) throws IOException 
+{
 
         long ap_actual, ap_final;
 
@@ -124,6 +126,42 @@ public void leer_bc(String nombre) throws IOException {
         }
         leer_archi.close();
     }
+public ArrayList obtener_etiquetas(String nombre) throws FileNotFoundException, IOException
+{   
+        long ap_actual, ap_final;
+        ArrayList etiquetas = new ArrayList();
 
+        RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
+        while ((ap_actual = leer_archi.getFilePointer()) != (ap_final = leer_archi.length())) 
+        {
+            
+            char etiqueta[] = new char[15], temp;
+            for (int c = 0; c < etiqueta.length; c++) {
+                temp = leer_archi.readChar();
+                etiqueta[c] = temp;
+            }
+            new String(etiqueta).replace('\0', ' ');
+            System.out.println(etiqueta);
+            etiquetas.add(etiqueta);
+            
+            for (int i = 0; i < 8; i++) 
+            {
+                
+                punto = leer_archi.readFloat();
+                
+            }
+
+        }
+        leer_archi.close();
+        return etiquetas;
 }
 
+public void etiqueta(int index,String nombre) throws FileNotFoundException, FileNotFoundException
+{
+    long ap_actual, ap_final;
+    ArrayList etiquetas = new ArrayList();
+
+    RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
+}
+
+}

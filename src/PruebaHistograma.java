@@ -34,7 +34,7 @@ public class PruebaHistograma
        ptoBase2=v1+dist;
          System.out.println(ptoBase2);
        //resta es una variable que definirá la cantidad de traslape
-       resta=dist*0.4;
+       resta=dist*0.35;
        //traslape será el punto base de la siguiente gráfica
        traslape=ptoBase2-resta;
          System.out.println(traslape);
@@ -45,7 +45,7 @@ public class PruebaHistograma
      {
        ptoBase2=v2+dist;
          System.out.println(ptoBase2);
-       resta=dist*0.4;
+       resta=dist*0.35;
        traslape=ptoBase2-resta;
          System.out.println(traslape);
        xB2=v2;
@@ -57,11 +57,16 @@ public class PruebaHistograma
       Se tienen todos los valores para calcular las funciones de las rectas
       del modo que sigue:
       1er recta: y=m*(xA-xA2)
-      2da recta: y=m*(xB-xB2)
+      2da recta: y=-m*(xB-xB2)
       NOTA: y1 siempre es 0 pues siempre es el origen.
      */
      
      return traslape;
     }//fin de histograma        
+
+    float evaluar(float x1, float y1, float x2, float y2, float x) 
+    {
+        return  ((y2-y1)/(x2-x1))*(x - x2) + y2;
+    }
     
 }//fin de clase
