@@ -1,4 +1,7 @@
+package Sistema_Experto_Difuso;
 
+
+import Base_Hechos.Archivos;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -16,6 +19,12 @@ import java.util.Iterator;
  */
 public class Difusificador 
 {
+    float traslape;
+
+    public Difusificador(float traslape) 
+    {
+        this.traslape = traslape;
+    }
     
     public void difusificar(float ve,Archivos a,String nombre) throws FileNotFoundException, IOException
     {
@@ -24,43 +33,58 @@ public class Difusificador
         PruebaHistograma ph;
 
         RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
-        while ((ap_actual = leer_archi.getFilePointer()) != (ap_final = leer_archi.length())) {
+        while ((ap_actual = leer_archi.getFilePointer()) != (ap_final = leer_archi.length())) 
+        {
             
             char etiqueta[] = new char[15], temp;
             for (int c = 0; c < etiqueta.length; c++) {
                 temp = leer_archi.readChar();
                 etiqueta[c] = temp;
             }
-            new String(etiqueta).replace('\0', ' ');
-            System.out.println(etiqueta);
+            
+            String string = new String(etiqueta);
              ph = new PruebaHistograma();
+             float valor = 0;
+             float m = 0,t = 0,xf = 0.0f;
             for (int i = 0; i < 8; i++) 
             {
                 punto[i] = leer_archi.readFloat();
-                if(ve > pbase && ve < punto[i])
-                {
-                    ph.evaluar(pbase,pbasey,punto[i],1,ve);
-                }
+                
+                //System.out.println("punto "+punto[i]);
+                if(punto[i] != 0)
+                {                    
+                    t = ph.evaluar(pbase, pbasey, punto[i], 1, ve);
+//                    System.out.println(string +" = "+ t);
+                    valor = (valor < t)?t:valor;
+                    t = (1-pbasey)/(punto[i]-pbase);
+                    m = (t != 0)?t:m;
+                    pbase = punto[i];
+                    pbasey = 1;
+                }            
                 else
                 {
+                    xf = ph.fin(pbase,pbasey,-m);
                     
-                }
+                    t = ph.evaluar(pbase, pbasey, xf, 0, ve);
+                    valor = (valor < t)?t:valor;
+//                    System.out.println(string +" = "+ t);
+                    pbasey = 0;
+                    pbase = xf - (xf - pbase) * traslape;
+                    //System.out.println("("+pbase+","+pbasey+")");
+                    for(int j = 0 ; j < (8-i-1);j++)
+                    {
+                        leer_archi.readFloat();
+                    }
+                    break;
+               
             }
-//            int j = 0;
-//            float v1,v2;
-//            while(punto[j] != 0.0)
-//            {
-//                v1 = punto[j];
-//                System.out.println(v1);
-//                j ++;
-//                v2 =punto[j];
-//                System.out.println(v2);
-//                j ++;
-//                pbase = (float)ph.histograma(v1, v2, pbase);
-//                System.out.println("Punto base = " + pbase);
-//            }
-
+//            
+            
+            }
+            System.out.println(string+" = "+valor);
+           
         }
         leer_archi.close();
     }
+    
 }

@@ -1,3 +1,5 @@
+package Sistema_Experto_Difuso;
+
 /**
  *
  * @author AngelAlfredo
@@ -32,22 +34,22 @@ public class PruebaHistograma
      if(v2==0)
      {
        ptoBase2=v1+dist;
-         System.out.println(ptoBase2);
+//         System.out.println(ptoBase2);
        //resta es una variable que definirá la cantidad de traslape
        resta=dist*0.35;
        //traslape será el punto base de la siguiente gráfica
        traslape=ptoBase2-resta;
-         System.out.println(traslape);
+         //System.out.println(traslape);
          
        xB2=v1;
      }//fin de if 
      else
      {
        ptoBase2=v2+dist;
-         System.out.println(ptoBase2);
+         //System.out.println(ptoBase2);
        resta=dist*0.35;
        traslape=ptoBase2-resta;
-         System.out.println(traslape);
+         //System.out.println(traslape);
        xB2=v2;
      }//fin de else  
      
@@ -66,7 +68,16 @@ public class PruebaHistograma
 
     float evaluar(float x1, float y1, float x2, float y2, float x) 
     {
-        return  ((y2-y1)/(x2-x1))*(x - x2) + y2;
+        float y = ((y2-y1)/(x2-x1))*(x - x2) + y2;
+//        System.out.println("("+x1+","+y1+") -- ("+x2+","+y2+") da:("+x+","+y+")");
+        return (x1 <= x && x2 >= x)?((y2-y1)/(x2-x1))*(x - x2) + y2:0;
+    }
+
+    float fin(float pbase, float pbasey, float f) 
+    {
+        float t = pbase + (-pbasey / f);
+//        System.out.println("("+pbase+","+pbasey+") m = "+f+" xfinal "+t);
+        return t;
     }
     
 }//fin de clase
