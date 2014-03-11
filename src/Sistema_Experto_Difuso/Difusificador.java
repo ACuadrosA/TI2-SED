@@ -46,6 +46,10 @@ public class Difusificador
              ph = new PruebaHistograma();
              float valor = 0;
              float m = 0,t = 0,xf = 0.0f;
+             
+             pbase = leer_archi.readFloat();//incio universo
+             leer_archi.readFloat();//fin universo
+             traslape = leer_archi.readFloat();//traslape
             for (int i = 0; i < 8; i++) 
             {
                 punto[i] = leer_archi.readFloat();

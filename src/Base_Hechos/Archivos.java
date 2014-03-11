@@ -1,10 +1,15 @@
 package Base_Hechos;
 
+
+
+import com.sun.org.apache.regexp.internal.RETest;
+import com.sun.xml.internal.ws.util.UtilException;
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -41,8 +46,34 @@ public class Archivos {
             System.out.println("Archivo BC sin datos aun");
         }
 
-
+        
         Scanner entrada = new Scanner(System.in);
+        /*
+         Inserccion de universo de discurso y valor de traslape
+         */
+        
+         System.out.println("Nombre del modelo");
+         var_entrada = entrada.next();
+         buffer = new StringBuffer(var_entrada);
+         buffer.setLength(15);
+         archi.writeChars(buffer.toString());
+         
+         System.out.println("Inicio de universo de discurso: ");
+         punto = entrada.nextFloat();
+         archi.writeFloat(punto);
+         
+         System.out.println("Fin de universo de discurso: ");
+         punto = entrada.nextFloat();
+         archi.writeFloat(punto);
+        
+         System.out.println("Porcentaje de traslape para el modelo: ");
+         punto = entrada.nextFloat();
+         archi.writeFloat(punto);
+         
+         for (int i = 0; i < 5; i++) {
+             archi.writeFloat(0);
+         }
+         
         do {
             //Nombre de etiqueta difusa
             System.out.println("Nombre de la etiqueta difusa:");
@@ -55,7 +86,7 @@ public class Archivos {
             n = 1;
             for (int i = 0; i < 8; i++) {
                 if (n != 1) {
-                    archi.writeFloat(0);
+                    archi.writeInt(0);
                 } else {
                     System.out.println("Introduce punto critico: ");
                     //punto = entrada.nextInt();
@@ -92,15 +123,14 @@ public int recorrerfin() throws FileNotFoundException, IOException {
                 //leer_archi.readInt();
                 leer_archi.readFloat();
             }
-                System.out.println(leer_archi.getFilePointer());
+                
             contador++;
         }
         leer_archi.close();
         return contador;
     }
 
-public void leer_bc(String nombre) throws IOException 
-{
+public void leer_bc(String nombre) throws IOException {
 
         long ap_actual, ap_final;
 
@@ -115,28 +145,21 @@ public void leer_bc(String nombre) throws IOException
             new String(etiqueta).replace('\0', ' ');
             System.out.println(etiqueta);
             
-            for (int i = 0; i < 8; i++) 
-            {
+            for (int i = 0; i < 8; i++) {
                 //punto = leer_archi.readInt();
                 punto = leer_archi.readFloat();
-                if(punto != 0.0)
-                    System.out.println(punto);
-                //else
-                  //  break;
+                System.out.println(punto);
             }
 
         }
         leer_archi.close();
     }
-public ArrayList obtener_etiquetas(String nombre) throws FileNotFoundException, IOException
-{   
-        long ap_actual, ap_final;
-        ArrayList etiquetas = new ArrayList();
+
+public float getinicio_universo(String nombre) throws FileNotFoundException, IOException{
+    float inicio = 0;
 
         RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
-        while ((ap_actual = leer_archi.getFilePointer()) != (ap_final = leer_archi.length())) 
-        {
-            
+           
             char etiqueta[] = new char[15], temp;
             for (int c = 0; c < etiqueta.length; c++) {
                 temp = leer_archi.readChar();
@@ -144,26 +167,58 @@ public ArrayList obtener_etiquetas(String nombre) throws FileNotFoundException, 
             }
             new String(etiqueta).replace('\0', ' ');
             System.out.println(etiqueta);
-            etiquetas.add(etiqueta);
             
-            for (int i = 0; i < 8; i++) 
-            {
-                
-                punto = leer_archi.readFloat();
-                
-            }
-
-        }
+                inicio = leer_archi.readFloat();
+                System.out.println(inicio);
+            
         leer_archi.close();
-        return etiquetas;
+    
+    return inicio;
 }
 
-public void etiqueta(int index,String nombre) throws FileNotFoundException, FileNotFoundException
-{
-    long ap_actual, ap_final;
-    ArrayList etiquetas = new ArrayList();
+public float getfin_universo(String nombre) throws FileNotFoundException, IOException{
+    float fin = 0;
+        RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
+           
+            char etiqueta[] = new char[15], temp;
+            for (int c = 0; c < etiqueta.length; c++) {
+                temp = leer_archi.readChar();
+                etiqueta[c] = temp;
+            }
+            new String(etiqueta).replace('\0', ' ');
+            System.out.println(etiqueta);
+            
+                leer_archi.readFloat();
+                fin = leer_archi.readFloat();
+                System.out.println(fin);
+            
+        leer_archi.close();
+    
+    return fin;
+}
 
-    RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
+public float get_traslape(String nombre) throws FileNotFoundException, IOException{
+    float traslape = 0;
+
+        RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
+           
+            char etiqueta[] = new char[15], temp;
+            for (int c = 0; c < etiqueta.length; c++) {
+                temp = leer_archi.readChar();
+                etiqueta[c] = temp;
+            }
+            new String(etiqueta).replace('\0', ' ');
+            System.out.println(etiqueta);
+            
+                leer_archi.readFloat();
+                leer_archi.readFloat();
+                traslape = leer_archi.readFloat();
+                System.out.println(traslape);
+            
+        leer_archi.close();
+    
+    return traslape;
 }
 
 }
+
