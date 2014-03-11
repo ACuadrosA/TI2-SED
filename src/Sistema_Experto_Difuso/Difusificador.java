@@ -31,12 +31,27 @@ public class Difusificador
         long ap_actual, ap_final;
         float punto[] = new float[8],pbase = 0,pbasey=0;
         PruebaHistograma ph;
-
         RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
+            
+        char etiqueta[] = new char[15], temp;
+            
+            for (int c = 0; c < etiqueta.length; c++) {
+                temp = leer_archi.readChar();
+                etiqueta[c] = temp;
+            }
+        
+
+        pbase = leer_archi.readFloat();//incio universo
+         leer_archi.readFloat();//fin universo
+         traslape = leer_archi.readFloat();//traslape
+         for (int i = 0; i < 5; i++) {
+            leer_archi.readFloat();
+        }
+             
         while ((ap_actual = leer_archi.getFilePointer()) != (ap_final = leer_archi.length())) 
         {
             
-            char etiqueta[] = new char[15], temp;
+            etiqueta = new char[15];
             for (int c = 0; c < etiqueta.length; c++) {
                 temp = leer_archi.readChar();
                 etiqueta[c] = temp;
@@ -47,9 +62,7 @@ public class Difusificador
              float valor = 0;
              float m = 0,t = 0,xf = 0.0f;
              
-             pbase = leer_archi.readFloat();//incio universo
-             leer_archi.readFloat();//fin universo
-             traslape = leer_archi.readFloat();//traslape
+             
             for (int i = 0; i < 8; i++) 
             {
                 punto[i] = leer_archi.readFloat();
