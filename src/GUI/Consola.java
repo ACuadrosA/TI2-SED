@@ -1,6 +1,7 @@
 package GUI;
 
 import Base_Hechos.Archivos;
+import Base_Hechos.BaseReglas;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +47,7 @@ public class Consola
                 }
                     
             }
-            
+            else
             if(linea.startsWith("nueva variable"))
             {
                 try{
@@ -55,10 +56,31 @@ public class Consola
                     salida.println(e.getMessage());
                 }
             }
+            else
+            if(linea.startsWith("nueva base de reglas"))
+            {
+                try{
+                    BaseReglas base = new BaseReglas(linea.substring(21));
+                    base.nuevo();
+                    base.comando(this);
+                }catch(IOException e){
+                    salida.println(e.getMessage());
+                }
+            }
+                    
             
             
             salida.print(">");
         }
         
+    }
+
+    public PrintStream getSalida() {
+        return salida;
+    }
+    
+    public InputStream getEntrada()
+    {
+        return entrada;
     }
 }
