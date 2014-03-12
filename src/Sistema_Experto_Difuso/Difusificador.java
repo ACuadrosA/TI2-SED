@@ -98,7 +98,8 @@ public class Difusificador
 //            
             
             }
-            System.out.println(string+" = "+valor);
+            System.out.println(string+" = "+valor);//En lugar de imprimir en pantalla escribimos a un archivo 
+                                                    //Nombre de variable (char[15]) etiqueta(char[15]) grado de pertenencia(float)
            
         }
         leer_archi.close();

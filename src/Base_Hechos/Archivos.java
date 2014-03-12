@@ -148,7 +148,8 @@ public void leer_bc(String nombre) throws IOException {
             for (int i = 0; i < 8; i++) {
                 //punto = leer_archi.readInt();
                 punto = leer_archi.readFloat();
-                System.out.println(punto);
+                if(punto != 0.0f)
+                    System.out.println(punto);
             }
 
         }
