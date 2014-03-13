@@ -17,6 +17,7 @@ public class Archivo_Secuencial_Indexado
         maestro = new File(nombre);
         indice = new File("index_"+ nombre);
         directorio  = new Arbol();
+        puntIndice = puntMaestro = 0;
     }
     
     public void nuevo() throws IOException

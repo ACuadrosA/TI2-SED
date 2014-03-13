@@ -2,6 +2,7 @@ package Sistema_Experto_Difuso;
 
 
 import Base_Hechos.Archivos;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -20,10 +21,12 @@ import java.util.Iterator;
 public class Difusificador 
 {
     float traslape;
+    File varDifusa;
 
-    public Difusificador(float traslape) 
+    public Difusificador(float traslape,String ruta) 
     {
         this.traslape = traslape;
+        varDifusa = new File(ruta);
     }
     
     public void difusificar(float ve,Archivos a,String nombre) throws FileNotFoundException, IOException
@@ -31,6 +34,7 @@ public class Difusificador
         long ap_actual, ap_final;
         float punto[] = new float[8],pbase = 0,pbasey=0;
         PruebaHistograma ph;
+        RandomAccessFile raf = new RandomAccessFile(varDifusa, "rw");
         RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
             
         char etiqueta[] = new char[15], temp;
@@ -98,7 +102,13 @@ public class Difusificador
 //            
             
             }
-            System.out.println(string+" = "+valor);//En lugar de imprimir en pantalla escribimos a un archivo 
+            StringBuilder sb = new StringBuilder(nombre);
+            sb.setLength(15);
+            
+            raf.writeChars(sb.toString());
+            raf.writeChars(string);
+            raf.writeFloat(valor);
+            System.out.println(sb.toString()+string+valor);//En lugar de imprimir en pantalla escribimos a un archivo 
                                                     //Nombre de variable (char[15]) etiqueta(char[15]) grado de pertenencia(float)
            
         }

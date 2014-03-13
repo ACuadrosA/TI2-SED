@@ -19,7 +19,8 @@ import java.util.logging.Logger;
  */
 public class BaseReglas extends Archivo_Secuencial_Indexado
 {
-    String Ante[], Cons[];
+    String Ante[], Cons[],tempA[],tempB[];
+    
     public BaseReglas(String nombre) 
     {
         super(nombre);
@@ -196,6 +197,71 @@ public class BaseReglas extends Archivo_Secuencial_Indexado
             System.out.println("\t"+raf.readLong());
         }
         raf.close();
+    }
+
+    public boolean tieneRegistros() throws IOException
+    {
+        RandomAccessFile raf = new RandomAccessFile(maestro, "rw");
+        return raf.length() < puntMaestro;
+    }
+
+    public void siguienteRegla() throws IOException 
+    {
+        RandomAccessFile raf = new RandomAccessFile(maestro, "rw");
+        
+        String antecedentes[] = new String[Ante.length];
+        String consecuentes[] = new String[Cons.length];
+        
+        char etiqueta[] = new char[15];
+        
+        for(String s: antecedentes)
+        {
+            for (int i = 0; i < 15; i++) 
+                etiqueta[i] = raf.readChar();
+            
+            s = new String(etiqueta);
+        }
+        for(String s: consecuentes)
+        {
+            for (int i = 0; i < 15; i++) 
+                etiqueta[i] = raf.readChar();
+            
+            s = new String(etiqueta);
+        }
+        
+        tempA = antecedentes;
+        tempB = consecuentes;
+                
+    }
+    
+    public String nombreAntecedente(int i)
+    {
+        return Ante[i];
+    }
+    
+    public String etiquetaRegla(int i)
+    {
+        return tempA[i];
+    }
+
+    public int noAnt() 
+    {
+        return Ante.length;
+                
+    }
+
+    public int noCon() {
+        return Cons.length;
+    }
+    
+    public String nombreConsecuente(int i)
+    {
+        return Cons[i];
+    }
+    
+    public String etiquetaConsec(int i)
+    {
+        return tempB[i];
     }
     
 }

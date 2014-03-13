@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
             Archivos a = new Archivos();
-            Difusificador d = new Difusificador(0.35f);
+            Difusificador d = new Difusificador(0.35f,"var_dif");
             
             
             d.difusificar(4.8f,a, "A");
