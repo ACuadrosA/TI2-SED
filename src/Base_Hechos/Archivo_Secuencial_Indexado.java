@@ -16,6 +16,7 @@ public class Archivo_Secuencial_Indexado
     {
         maestro = new File(nombre);
         indice = new File("index_"+ nombre);
+        directorio  = new Arbol();
     }
     
     public void nuevo() throws IOException
@@ -56,7 +57,7 @@ public class Archivo_Secuencial_Indexado
 
     void insertar(int llave) throws FileNotFoundException, IOException 
     {
-        directorio.raiz.inserta(new Nodo(puntMaestro,llave));
+        directorio.insertar(puntMaestro,llave);
         insertar(llave,puntMaestro);
         
     }
@@ -66,7 +67,7 @@ public class Archivo_Secuencial_Indexado
 
         public Arbol() 
         {
-            
+            raiz = null;
         }
         
         public void insertar(long valor, int llave)

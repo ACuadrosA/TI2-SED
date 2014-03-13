@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.RandomAccessFile;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -58,6 +60,7 @@ public class BaseReglas extends Archivo_Secuencial_Indexado
             if(linea.startsWith("inicia"))
             {
                 try {                
+                    salida.println("Escribiendo en archivo indice");
                     escribeIndice();
                 } catch (IOException ex) {
                     salida.println(ex.getMessage());
@@ -66,8 +69,15 @@ public class BaseReglas extends Archivo_Secuencial_Indexado
             else
             if(linea.startsWith("nueva regla:"))
             {
+                int hash = linea.substring(13).hashCode();
                 String[] split = linea.substring(13).split(",");
-                
+                try {
+                    insertar((hash < 0)?-hash:hash,split);
+                } catch (FileNotFoundException ex) {
+                    System.out.println(ex.getMessage());
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
             }
                     
             salida.print("Reglas>");
@@ -78,21 +88,23 @@ public class BaseReglas extends Archivo_Secuencial_Indexado
     public void escribeIndice() throws FileNotFoundException, IOException
     {
         RandomAccessFile cabezal = new RandomAccessFile(indice, "rw");
-        cabezal.write(Ante.length);
+        cabezal.writeInt(Ante.length);
         for (int i = 0; i < Ante.length; i++) 
         {
             StringBuilder sb = new StringBuilder(Ante[i]);
             sb.setLength(15);
             cabezal.writeChars(sb.toString());
         }
-        cabezal.write(Cons.length);
+        cabezal.writeInt(Cons.length);
         for (int i = 0; i < Cons.length; i++) 
         {
             StringBuilder sb = new StringBuilder(Cons[i]);
             sb.setLength(15);
             cabezal.writeChars(sb.toString());
         }
+        
         puntIndice = cabezal.getFilePointer();
+        System.out.println(puntIndice);
         cabezal.close();
     }    
 
@@ -141,7 +153,49 @@ public class BaseReglas extends Archivo_Secuencial_Indexado
         puntMaestro = raf.getFilePointer();
         raf.close();
     }
-    
- 
+
+    public void depurar() throws IOException 
+    {
+        RandomAccessFile raf = null;
+        char temp[] = new char[15];
+        System.out.println("Archivo "+ indice);
+        if(indice.exists())
+            raf = new RandomAccessFile(indice, "rw");
+        else
+        {
+            System.out.println("El archivo "+indice+" no exitse");
+            return;
+        }
+        System.out.println(indice);
+        int a = raf.readInt();
+        System.out.println(a + " antecedentes: ");
+        for (int i = 0; i < a; i++) 
+        {
+            for (int j = 0; j < 15; j++) 
+            {
+                char c = raf.readChar();
+                temp[j] = c;
+            }
+            System.out.println("\t"+new String(temp));
+        }
+        a = raf.readInt();
+        System.out.println(a + " consecuentes: ");
+        for (int i = 0; i < a; i++) 
+        {
+            for (int j = 0; j < 15; j++) 
+            {
+                char c = raf.readChar();
+                temp[j] = c;
+            }
+            System.out.println("\t"+new String(temp));
+        }
+        while(raf.getFilePointer() < raf.length())
+        {
+            System.out.print("\t"+raf.readInt());
+            
+            System.out.println("\t"+raf.readLong());
+        }
+        raf.close();
+    }
     
 }

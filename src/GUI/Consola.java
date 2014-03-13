@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Consola 
 {
@@ -25,6 +27,8 @@ public class Consola
         Consola c = new Consola(System.in,System.out);
         c.inicia();
         
+        
+        
     }
 
     private void inicia() 
@@ -38,33 +42,42 @@ public class Consola
        
         while( ! (linea = comando.nextLine()).equals("SALIR"))  //Mientras no se escriba SALIR el programa continúa
         {
-            if(linea.startsWith("ver"))
+            if(linea.startsWith("ver: "))
             {
                 try{
-                    new Archivos().leer_bc(linea.substring(4));
+                    new Archivos().leer_bc(linea.substring(5));
                 }catch(IOException e){
                     salida.println(e.getMessage());
                 }
                     
             }
             else
-            if(linea.startsWith("nueva variable"))
+            if(linea.startsWith("nueva variable: "))
             {
                 try{
-                    new Archivos().escribir_Arch_Maestro(linea.substring(15));
+                    new Archivos().escribir_Arch_Maestro(linea.substring(16));
                 }catch(IOException e){
                     salida.println(e.getMessage());
                 }
             }
             else
-            if(linea.startsWith("nueva base de reglas"))
+            if(linea.startsWith("nueva base de reglas: "))
             {
                 try{
-                    BaseReglas base = new BaseReglas(linea.substring(21));
-                    base.nuevo();
+                    BaseReglas base = new BaseReglas(linea.substring(22));
+                    base.nuevo();   
                     base.comando(this);
                 }catch(IOException e){
                     salida.println(e.getMessage());
+                }
+            }
+            else
+            if(linea.startsWith("ver reglas: "))
+            {
+                try {
+                    new BaseReglas(linea.substring(12)).depurar();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
                 }
             }
                     
