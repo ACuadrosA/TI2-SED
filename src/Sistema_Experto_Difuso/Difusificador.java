@@ -22,9 +22,11 @@ public class Difusificador
 {
     float traslape;
     File varDifusa;
+    long puntero;
 
     public Difusificador(float traslape,String ruta) 
     {
+        puntero = 0;
         this.traslape = traslape;
         varDifusa = new File(ruta);
     }
@@ -34,7 +36,10 @@ public class Difusificador
         long ap_actual, ap_final;
         float punto[] = new float[8],pbase = 0,pbasey=0;
         PruebaHistograma ph;
+        
         RandomAccessFile raf = new RandomAccessFile(varDifusa, "rw");
+        raf.seek(puntero);
+        
         RandomAccessFile leer_archi = new RandomAccessFile(nombre, "r");
             
         char etiqueta[] = new char[15], temp;
@@ -112,6 +117,8 @@ public class Difusificador
                                                     //Nombre de variable (char[15]) etiqueta(char[15]) grado de pertenencia(float)
            
         }
+        puntero = raf.getFilePointer();
+        raf.close();
         leer_archi.close();
     }
     

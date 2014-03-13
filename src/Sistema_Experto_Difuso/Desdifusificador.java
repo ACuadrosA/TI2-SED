@@ -1,13 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Sistema_Experto_Difuso;
 
-/**
- *
- * @author Desarrollo
- */
-public class Desdifusificador {
+import java.io.File;
+
+public class Desdifusificador 
+{
+    File salDifusa,salReal;
     
+    public Desdifusificador(String rutaIn,String rutaSal)
+    {
+        salDifusa = new File(rutaIn);
+        salReal = new File(rutaSal);
+    }
+    
+    public void Desdifusificar()
+    {
+        
+    }
 }
